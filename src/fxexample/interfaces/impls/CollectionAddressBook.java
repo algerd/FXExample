@@ -3,7 +3,6 @@ package fxexample.interfaces.impls;
 
 import fxexample.interfaces.AddressBook;
 import fxexample.objects.Person;
-import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -44,13 +43,13 @@ public class CollectionAddressBook implements AddressBook {
     }
     
     public void fillTestData() {
-        personList.add(new Person("Иван", "234523523"));
-        personList.add(new Person("Роман", "457323225"));
-        personList.add(new Person("Антон", "23434564"));
-        personList.add(new Person("Джон", "457443325"));
-        personList.add(new Person("Джек", "3253535346"));
-        personList.add(new Person("Алиса", "3633653535"));
-        personList.add(new Person("Боб", "34643643663"));     
+        personList.add(new Person("Иван Петов", "234523523"));
+        personList.add(new Person("Роман Иванов", "457323225"));
+        personList.add(new Person("Антон Романов", "23434564"));
+        personList.add(new Person("Джон Смит", "457443325"));
+        personList.add(new Person("Джек Воробей", "3253535346"));
+        personList.add(new Person("Алиса Селезнёва", "3633653535"));
+        personList.add(new Person("Боб Майлс", "34643643663"));     
     }
      
 } 

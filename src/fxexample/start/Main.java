@@ -1,8 +1,6 @@
 
 package fxexample.start;
 
-import fxexample.interfaces.impls.CollectionAddressBook;
-import fxexample.objects.Person;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
