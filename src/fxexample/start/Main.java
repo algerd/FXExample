@@ -22,21 +22,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxexample/fxml/main.fxml"));
              
-        primaryStage.setTitle("");
-        primaryStage.setMinHeight(600);
+        primaryStage.setTitle("Адресная книга");
+        primaryStage.setMinHeight(500);
         primaryStage.setMinWidth(400);
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
-        
-        testData();
     }
 
-    private void testData() {
-        CollectionAddressBook addressBook = new CollectionAddressBook();
-        addressBook.fillTestData();
-        addressBook.print();
-    }
-   
-    
-    
 }
