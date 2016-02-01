@@ -4,7 +4,9 @@ package fxexample.controllers;
 import fxexample.interfaces.impls.CollectionAddressBook;
 import fxexample.objects.Person;
 import java.io.IOException;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,6 +27,11 @@ import javafx.stage.Stage;
 public class MainController {
     
     private CollectionAddressBook addressBookImpl = new CollectionAddressBook();
+    private Stage mainStage;
+    private Parent fxmlEdit;
+    private FXMLLoader fxmlLoader = new FXMLLoader();
+    private EditDialogController editDialogController;
+    private Stage editDialogStage;
     
     @FXML
     private Button btnAdd;
@@ -50,8 +58,8 @@ public class MainController {
     private TableColumn<Person, String> columnPhone;
        
     @FXML
-    private Label labelCount;   
-    
+    private Label labelCount;  
+   
     
     @FXML
     private void initialize() {
@@ -61,19 +69,58 @@ public class MainController {
         columnFIO.setCellValueFactory(new PropertyValueFactory<Person, String>("fio"));
         columnPhone.setCellValueFactory(new PropertyValueFactory<Person, String>("phone"));
     
-        addressBookImpl.fillTestData();
-        
+        initListeners();
+              
+        addressBookImpl.fillTestData();        
         tableAddressBook.setItems(addressBookImpl.getPersonList());
-        
-        updateCountLabel();
+
+        initLoader();     
     }
     
+    
+    private void initListeners() {
+        addressBookImpl.getPersonList().addListener(
+            new ListChangeListener<Person>() {
+                @Override
+                public void onChanged(ListChangeListener.Change<? extends Person> c) {
+                    updateCountLabel();
+                }
+            }      
+        );
+        
+        tableAddressBook.setOnMouseClicked(
+            new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.getClickCount() == 2) {
+                        // получить выбранную запись из таблицы
+                        Person selectedPerson = (Person)tableAddressBook.getSelectionModel().getSelectedItem();
+                        editDialogController.setPerson(selectedPerson);
+                    }
+                }             
+            }          
+        );            
+    }
+    
+    private void initLoader() {
+        try {
+            fxmlLoader.setLocation(getClass().getResource("/fxexample/fxml/edit.fxml"));
+            fxmlEdit = fxmlLoader.load();
+            editDialogController = fxmlLoader.getController();    
+        } catch (IOException e) {
+            e.printStackTrace();
+        }  
+    }
+    
+    public void setMainStage(Stage mainStage) {
+        this.mainStage = mainStage;
+    }
+        
     private void updateCountLabel() {
         labelCount.setText("Количество записей: " + addressBookImpl.getPersonList().size());
     }
-  
-    public void showDialog(ActionEvent actionEvent) {
-        
+       
+    public void actionButtonPressed(ActionEvent actionEvent) {
         // получить объект-источник события(нажатия)
         Object source = actionEvent.getSource();
         
@@ -82,41 +129,43 @@ public class MainController {
             return;
         }       
         Button clickedButton = (Button)source; 
-        
-        // получить выбранную запись из таблицы
-        Person selectedPerson = (Person)tableAddressBook.getSelectionModel().getSelectedItem();
-        
+                      
         switch (clickedButton.getId()) {
             case "btnAdd" :
-                System.out.println("add " + selectedPerson);
+                editDialogController.setPerson(new Person());
+                showDialog();
+                addressBookImpl.add(editDialogController.getPerson());
                 break;    
                 
             case "btnEdit" :
-                System.out.println("edit " + selectedPerson);
+                // получить выбранную запись из таблицы
+                Person editedPerson = (Person)tableAddressBook.getSelectionModel().getSelectedItem();
+                editDialogController.setPerson(editedPerson);
+                showDialog();
                 break;
                 
             case "btnDelete" :
-                System.out.println("delete" + selectedPerson);
+                // получить выбранную запись из таблицы
+                Person deletedPerson = (Person)tableAddressBook.getSelectionModel().getSelectedItem();
+                addressBookImpl.delete(deletedPerson);
                 break;
         }
-        
-        try {            
-            Parent root = FXMLLoader.load(getClass().getResource("/fxexample/fxml/edit.fxml"));
-            
-            Stage stage = new Stage();            
-            stage.setTitle("Редактирование записи");
-            stage.setMinHeight(150);
-            stage.setMinWidth(300);
-            stage.setResizable(false);
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node)actionEvent.getSource()).getScene().getWindow());
-            stage.show();
-            
-        } catch (IOException e) {
-            e.printStackTrace();
+    }
+      
+    private void showDialog() {  
+        // lazy initialization of editDialogStage
+        if (editDialogStage == null) {
+            editDialogStage = new Stage();
+            editDialogStage.setTitle("Редактирование записи");
+            editDialogStage.setMinHeight(150);
+            editDialogStage.setMinWidth(300);
+            editDialogStage.setResizable(false);
+            editDialogStage.setScene(new Scene(fxmlEdit));
+            editDialogStage.initModality(Modality.WINDOW_MODAL);
+            editDialogStage.initOwner(mainStage);                   
         }
-        
+        // для ожидания закрытия окна
+        editDialogStage.showAndWait();      
     }  
     
 }

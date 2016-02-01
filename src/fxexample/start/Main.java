@@ -1,6 +1,7 @@
 
 package fxexample.start;
 
+import fxexample.controllers.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,12 +19,17 @@ public class Main extends Application {
         
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxexample/fxml/main.fxml"));
-             
+        
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxexample/fxml/main.fxml"));
+        Parent fxmlMain = fxmlLoader.load();
+        MainController mainController = fxmlLoader.getController();
+        mainController.setMainStage(primaryStage); 
+          
         primaryStage.setTitle("Адресная книга");
-        primaryStage.setMinHeight(500);
+        primaryStage.setMinHeight(600);
         primaryStage.setMinWidth(400);
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(fxmlMain, 300, 275));
         primaryStage.show();
     }
 
