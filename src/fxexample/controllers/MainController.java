@@ -67,14 +67,15 @@ public class MainController {
         //tableAddressBook.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         
         columnFIO.setCellValueFactory(new PropertyValueFactory<Person, String>("fio"));
-        columnPhone.setCellValueFactory(new PropertyValueFactory<Person, String>("phone"));
-    
-        initListeners();
-              
-        addressBookImpl.fillTestData();        
-        tableAddressBook.setItems(addressBookImpl.getPersonList());
-
+        columnPhone.setCellValueFactory(new PropertyValueFactory<Person, String>("phone"));  
+        initListeners();             
+        fillData();
         initLoader();     
+    }
+
+    private void fillData() {
+        addressBookImpl.fillTestData();
+        tableAddressBook.setItems(addressBookImpl.getPersonList());
     }
     
     
