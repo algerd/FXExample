@@ -143,6 +143,13 @@ public class MainController {
                 Person editedPerson = (Person)tableAddressBook.getSelectionModel().getSelectedItem();
                 editDialogController.setPerson(editedPerson);
                 showDialog();
+                
+                //Требует доработки: надо добавить эктрактор в коллекцию для отслеживания изменений оббъектов в ней
+                //см.  пример collections.ObservableListUpdateCallback
+                // временное решение: т.к. наша коллекция отслеживает только удаление и добавление объектов - удалить и добавить объект
+                addressBookImpl.delete(editedPerson);
+                addressBookImpl.add(editedPerson);
+                
                 break;
                 
             case "btnDelete" :
