@@ -4,11 +4,14 @@ package fxexample.controllers;
 import fxexample.interfaces.impls.CollectionAddressBook;
 import fxexample.objects.Person;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,7 +27,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-public class MainController {
+public class MainController implements Initializable {
     
     private CollectionAddressBook addressBookImpl = new CollectionAddressBook();
     private Stage mainStage;
@@ -32,6 +35,8 @@ public class MainController {
     private FXMLLoader fxmlLoader = new FXMLLoader();
     private EditDialogController editDialogController;
     private Stage editDialogStage;
+    
+    private ResourceBundle resourceBundle; 
     
     @FXML
     private Button btnAdd;
@@ -60,19 +65,16 @@ public class MainController {
     @FXML
     private Label labelCount;  
    
-    
-    @FXML
-    private void initialize() {
-        // если надо выбирать несколько записей с помощью shift (SelectionMode.SINGLE по умолчанию)
-        //tableAddressBook.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        resourceBundle = resources;
         columnFIO.setCellValueFactory(new PropertyValueFactory<Person, String>("fio"));
         columnPhone.setCellValueFactory(new PropertyValueFactory<Person, String>("phone"));  
         initListeners();             
         fillData();
-        initLoader();     
+        initLoader();        
     }
-
+    
     private void fillData() {
         addressBookImpl.fillTestData();
         tableAddressBook.setItems(addressBookImpl.getPersonList());
@@ -118,7 +120,8 @@ public class MainController {
     }
         
     private void updateCountLabel() {
-        labelCount.setText("Количество записей: " + addressBookImpl.getPersonList().size());
+        // запись взять из бандла локализации с ключом count
+        labelCount.setText(resourceBundle.getString("count") + ": " + addressBookImpl.getPersonList().size());
     }
        
     public void actionButtonPressed(ActionEvent actionEvent) {
@@ -175,5 +178,7 @@ public class MainController {
         // для ожидания закрытия окна
         editDialogStage.showAndWait();      
     }  
+
+    
     
 }
