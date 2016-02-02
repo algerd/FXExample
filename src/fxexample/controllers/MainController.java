@@ -5,6 +5,7 @@ import fxexample.interfaces.impls.CollectionAddressBook;
 import fxexample.objects.Person;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -99,6 +100,7 @@ public class MainController implements Initializable {
                         // получить выбранную запись из таблицы
                         Person selectedPerson = (Person)tableAddressBook.getSelectionModel().getSelectedItem();
                         editDialogController.setPerson(selectedPerson);
+                        showDialog();
                     }
                 }             
             }          
@@ -108,11 +110,12 @@ public class MainController implements Initializable {
     private void initLoader() {
         try {
             fxmlLoader.setLocation(getClass().getResource("/fxexample/fxml/edit.fxml"));
+            fxmlLoader.setResources(ResourceBundle.getBundle("fxexample.bundles.Locale", new Locale("ru")));
             fxmlEdit = fxmlLoader.load();
             editDialogController = fxmlLoader.getController();    
         } catch (IOException e) {
             e.printStackTrace();
-        }  
+        }   
     }
     
     public void setMainStage(Stage mainStage) {
@@ -167,7 +170,7 @@ public class MainController implements Initializable {
         // lazy initialization of editDialogStage
         if (editDialogStage == null) {
             editDialogStage = new Stage();
-            editDialogStage.setTitle("Редактирование записи");
+            editDialogStage.setTitle(resourceBundle.getString("edit"));
             editDialogStage.setMinHeight(150);
             editDialogStage.setMinWidth(300);
             editDialogStage.setResizable(false);
