@@ -4,21 +4,23 @@ package fxexample.controllers;
 import fxexample.interfaces.impls.CollectionAddressBook;
 import fxexample.objects.Person;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javafx.beans.property.ObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -26,6 +28,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.controlsfx.control.textfield.CustomTextField;
+import org.controlsfx.control.textfield.TextFields;
 
 
 public class MainController implements Initializable {
@@ -36,6 +40,7 @@ public class MainController implements Initializable {
     private FXMLLoader fxmlLoader = new FXMLLoader();
     private EditDialogController editDialogController;
     private Stage editDialogStage;
+    private ObservableList<Person> backUpList;
     
     private ResourceBundle resourceBundle; 
     
@@ -49,7 +54,7 @@ public class MainController implements Initializable {
     private Button btnDelete;
     
     @FXML
-    private TextField txtSearch; 
+    private CustomTextField txtSearch; 
     
     @FXML
     private Button btnSearch;
@@ -71,6 +76,7 @@ public class MainController implements Initializable {
         resourceBundle = resources;
         columnFIO.setCellValueFactory(new PropertyValueFactory<Person, String>("fio"));
         columnPhone.setCellValueFactory(new PropertyValueFactory<Person, String>("phone"));  
+        setupClearButtonField(txtSearch);
         initListeners();             
         fillData();
         initLoader();        
@@ -78,6 +84,8 @@ public class MainController implements Initializable {
     
     private void fillData() {
         addressBookImpl.fillTestData();
+        backUpList = FXCollections.observableArrayList();
+        backUpList.addAll(addressBookImpl.getPersonList());
         tableAddressBook.setItems(addressBookImpl.getPersonList());
     }
     
@@ -165,6 +173,18 @@ public class MainController implements Initializable {
                 break;
         }
     }
+    
+    public void actionSearch(ActionEvent actionEvent) {
+        addressBookImpl.getPersonList().clear();
+        
+        for (Person person : backUpList) {
+            if (person.getFio().toLowerCase().contains(txtSearch.getText().toLowerCase()) ||
+                person.getPhone().toLowerCase().contains(txtSearch.getText().toLowerCase())) 
+            {
+                addressBookImpl.getPersonList().add(person);
+            }
+        }
+    }
       
     private void showDialog() {  
         // lazy initialization of editDialogStage
@@ -182,6 +202,16 @@ public class MainController implements Initializable {
         editDialogStage.showAndWait();      
     }  
 
-    
+    // Добавить Clear Button кнопку в кастомное текстовое поле - из документации ControlsFX
+    private void setupClearButtonField(CustomTextField customTextField) {
+        try {
+            Method m = TextFields.class.getDeclaredMethod("setupClearButtonField", TextField.class, ObjectProperty.class);
+            m.setAccessible(true);
+            m.invoke(null, customTextField, customTextField.rightProperty());           
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+     
     
 }
