@@ -3,6 +3,7 @@ package fxexample.controllers;
 
 import fxexample.interfaces.impls.CollectionAddressBook;
 import fxexample.objects.Person;
+import fxexample.utils.DialogManager;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -144,7 +145,9 @@ public class MainController implements Initializable {
             return;
         }       
         Button clickedButton = (Button)source; 
-                      
+        // получить выбранную запись из таблицы
+        Person selectedPerson = (Person)tableAddressBook.getSelectionModel().getSelectedItem();
+     
         switch (clickedButton.getId()) {
             case "btnAdd" :
                 editDialogController.setPerson(new Person());
@@ -153,25 +156,34 @@ public class MainController implements Initializable {
                 break;    
                 
             case "btnEdit" :
-                // получить выбранную запись из таблицы
-                Person editedPerson = (Person)tableAddressBook.getSelectionModel().getSelectedItem();
-                editDialogController.setPerson(editedPerson);
+                if (!isPersonSelected(selectedPerson)) {
+                    return;
+                }                   
+                editDialogController.setPerson(selectedPerson);
                 showDialog();
                 
                 //Требует доработки: надо добавить эктрактор в коллекцию для отслеживания изменений оббъектов в ней
                 //см.  пример collections.ObservableListUpdateCallback
                 // временное решение: т.к. наша коллекция отслеживает только удаление и добавление объектов - удалить и добавить объект
-                addressBookImpl.delete(editedPerson);
-                addressBookImpl.add(editedPerson);
-                
+                addressBookImpl.delete(selectedPerson);
+                addressBookImpl.add(selectedPerson);               
                 break;
                 
             case "btnDelete" :
-                // получить выбранную запись из таблицы
-                Person deletedPerson = (Person)tableAddressBook.getSelectionModel().getSelectedItem();
-                addressBookImpl.delete(deletedPerson);
+                if (!isPersonSelected(selectedPerson)) {
+                    return;
+                }             
+                addressBookImpl.delete(selectedPerson);
                 break;
         }
+    }
+    
+    private boolean isPersonSelected(Person selectedPerson) {
+        if (selectedPerson == null) {
+            DialogManager.showInfoDialog(resourceBundle.getString("error"), resourceBundle.getString("select_person"));
+            return false;
+        }
+        return true;
     }
     
     public void actionSearch(ActionEvent actionEvent) {

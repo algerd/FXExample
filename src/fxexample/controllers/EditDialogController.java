@@ -2,6 +2,7 @@
 package fxexample.controllers;
 
 import fxexample.objects.Person;
+import fxexample.utils.DialogManager;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -54,9 +55,19 @@ public class EditDialogController implements Initializable {
     }
     
     public void actionSave(ActionEvent actionEvent) {
-        person.setFio(txtFIO.getText());
-        person.setPhone(txtPhone.getText());
-        actionClose(actionEvent);
+        if (checkValues()) {
+            person.setFio(txtFIO.getText());
+            person.setPhone(txtPhone.getText());
+            actionClose(actionEvent);
+        }            
+    }
+    
+    private boolean checkValues() {
+        if (txtFIO.getText().trim().length() == 0 || txtPhone.getText().trim().length() == 0) {
+            DialogManager.showInfoDialog(resourceBundle.getString("error"), resourceBundle.getString("fill_field"));
+            return false;
+        }
+        return true;          
     }
    
 }
