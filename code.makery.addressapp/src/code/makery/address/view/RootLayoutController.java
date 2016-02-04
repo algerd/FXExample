@@ -25,6 +25,14 @@ public class RootLayoutController {
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
+    
+    /**
+     * Opens the birthday statistics.
+     */
+    @FXML
+    private void handleShowBirthdayStatistics() {
+        mainApp.showBirthdayStatistics();
+    }
 
     /**
      * Creates an empty address book.
