@@ -1,0 +1,10 @@
+Connect
+MetaDataTest
+CreatePersonTable
+InsertPersonTest
+UpdatePersonTest
+DeletePersonTest
+PreparedStatementTest
+SupportedResultSetProperties
+QueryPersonTest - применение ResultSet
+
