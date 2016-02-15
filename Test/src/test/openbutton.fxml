@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?language javascript?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+
+<!-- 
+    согласно правилам именования контроллера вложенного документа имя контроллера:
+    fx:id + Controller = openBtn + Controller = OpenBtnController
+-->
+
+
+<Button fx:id="openBtn" onAction="#showOpenMsg" text="Open" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40" fx:controller="test.OpenBtnController" />

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+
+<!--
+    fxml-документ может иметь только 1 контроллер (в корне).
+    Но каждый внедряемый с помощью fx:include fxml-документ может иметь свой контроллер.
+    FXMLLoader позволяет передавать ссылки контроллеров вложенных документов в контроллер
+    главного документа. Для этого надо следовать правилам именования контроллеров вложенных 
+    документов:
+        - fx:id вложенного с помощью fx:include корневого элемента + Controller = closeBtn + Controller
+    В нашем случае fx:id="closeBtn" для корневого элемента Button в closebutton.fxml,
+    поэтому имя вложенного контроллера closeBtnController.
+    И главный контроллер главного документа получает ссылку(поле) на вложенный контроллер.    
+    Имя ссылки вложенного контроллера в главном контроллере должна соответствовать правилу:
+        - fx:id элемента fx:include + Controller = includedCloseBtn + Controller 
+-->
+
+<VBox fx:id="root" prefHeight="100.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.MainController">
+   <HBox>
+      <children>
+         <Button fx:id="addCloseBtn" mnemonicParsing="false" onAction="#addCloseBtn" text="Add CloseButton">
+            <HBox.margin>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </HBox.margin>
+         </Button>
+         <Button fx:id="addOpenBtn" mnemonicParsing="false" onAction="#addOpenBtn" prefHeight="25.0" prefWidth="112.0" text="Add OpenButton">
+            <HBox.margin>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </HBox.margin>
+         </Button>
+      </children>
+   </HBox>
+   <AnchorPane fx:id="newPane" prefHeight="100.0" />		   
+</VBox>
