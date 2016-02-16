@@ -1,5 +1,5 @@
 
-package test;
+package test1;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,7 +53,7 @@ public class MainController {
 	}
     
     private void loadCloseBtn() throws IOException {
-        URL fxmlUrl = this.getClass().getClassLoader().getResource("test/closebutton.fxml");
+        URL fxmlUrl = this.getClass().getClassLoader().getResource("test1/closebutton.fxml");
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(fxmlUrl);  
 		closeBtn = loader.<Button>load();
@@ -61,7 +61,7 @@ public class MainController {
     }
     
     private void loadOpenBtn() throws IOException {
-        URL fxmlUrl = this.getClass().getClassLoader().getResource("test/openbutton.fxml");
+        URL fxmlUrl = this.getClass().getClassLoader().getResource("test1/openbutton.fxml");
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(fxmlUrl);     
 		openBtn = loader.<Button>load();

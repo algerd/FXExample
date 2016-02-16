@@ -1,5 +1,5 @@
 
-package test;
+package test2;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -18,7 +18,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws MalformedURLException, IOException {
 		
-        URL fxmlUrl = this.getClass().getClassLoader().getResource("test/main.fxml");
+        URL fxmlUrl = this.getClass().getClassLoader().getResource("test2/main.fxml");
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(fxmlUrl);
         

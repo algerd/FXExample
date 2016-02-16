@@ -21,7 +21,7 @@
         - fx:id элемента fx:include + Controller = includedCloseBtn + Controller 
 -->
 
-<VBox fx:id="root" prefHeight="100.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.MainController">
+<VBox fx:id="root" prefHeight="100.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test1.MainController">
    <HBox>
       <children>
          <Button fx:id="addCloseBtn" mnemonicParsing="false" onAction="#addCloseBtn" text="Add CloseButton">

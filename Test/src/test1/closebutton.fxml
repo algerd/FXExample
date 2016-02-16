@@ -7,8 +7,8 @@
 
 <!-- 
     согласно правилам именования контроллера вложенного документа имя контроллера:
-    fx:id + Controller = openBtn + Controller = OpenBtnController
+    fx:id + Controller = closeBtn + Controller = CloseBtnController
 -->
 
 
-<Button fx:id="openBtn" onAction="#showOpenMsg" text="Open" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40" fx:controller="test.OpenBtnController" />
+<Button fx:id="closeBtn" onAction="#showCloseMsg" text="Close" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40" fx:controller="test1.CloseBtnController" />
